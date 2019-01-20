@@ -8,7 +8,8 @@ if len(args) != 3:
     eg: $ python 1-1.py test
   ''')
 
-def isDeletedChar(text1_counter, text2_counter):
+# まちがい
+def wrongIsDeletedChar(text1_counter, text2_counter):
   existCount = 0
   print(text1_counter)
   print(text2_counter)
@@ -19,6 +20,24 @@ def isDeletedChar(text1_counter, text2_counter):
   print(existCount)
   return existCount == len(list(text1_counter)) - 1
 
+# len(text1) > len(text2)前提
+def isDeletedChar(text1, text2):
+  index1 = 0
+  index2 = 0
+  for i in range(len(text2)):
+    if text1[index1] == text2[index2]:
+      index1 += 1
+      index2 += 1
+    else:
+      if text1[index1 + 1] != text2[index2]:
+        return False
+      else:
+        index1 += 1
+        index2 += 1
+  return True
+    
+
+# 文字数がおなじ前提
 def isReplacedOneChar(text1, text2):
   # 異なる文字が場所が一箇所しか無いかどうか
   diff_count = 0
@@ -32,20 +51,25 @@ def isReplacedOneChar(text1, text2):
   print(diff_count)
   return True
 
-# TODO
+
 def isReplaceableAtOneTime(text1, text2):
-  # len(text1) > len(text2) 前提
-  index1 = 0
-  index2 = 0
-  for i in range(len(text1)):
-    if text1[i] == text2[i]:
-      index1 += 1
-      index2 += 1
-    else:
-      if text1[index1 + 2] == text2[index2]
-    
-    if index1 - index2 > 1:
-      return False
+  if text1 == text2:
+    return True
+
+  len_text1 = len(text1)
+  len_text2 = len(text2)
+
+  # 削除・追加かは本質的には同じ操作なので 文字列の長さに合わせてベースの文字列を変える
+  # isDeletedCharでベース文字列から１文字削除したものかどうかを判定する
+  if len_text1 == len_text2:
+    # 1文字置き換えかのチェック
+    return isReplacedOneChar(text1, text2)
+  if len_text1 > len_text2:
+    # 1文字削除かのチェック
+    return isDeletedChar(text1, text2)
+  else:
+    # 1文字追加かのチェック
+    return isDeletedChar(text2, text1)
 
 # 誤答 文字数のカウントしかみてなかった
 # 文字数は１文字削除で並び順が違っててもTrueになっていた
