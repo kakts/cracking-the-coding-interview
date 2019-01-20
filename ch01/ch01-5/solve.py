@@ -56,8 +56,12 @@ def isReplaceableAtOneTime(text1, text2):
   if text1 == text2:
     return True
 
+
   len_text1 = len(text1)
   len_text2 = len(text2)
+  # 一回の操作で文字数が2以上になることはありえない
+  if abs(len_text1 - len_text2) >= 2:
+    return False
 
   # 削除・追加かは本質的には同じ操作なので 文字列の長さに合わせてベースの文字列を変える
   # isDeletedCharでベース文字列から１文字削除したものかどうかを判定する
